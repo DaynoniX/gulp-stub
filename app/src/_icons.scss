@@ -1,0 +1,45 @@
+.icon{
+
+  display:block;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  background-color: #000;
+
+  &.default{
+    width:1em;
+    height:1em;
+  }
+  &.small{
+    width:.5em;
+    height:.5em;
+  }
+  &.medium{
+    width:1.5em;
+    height:1.5em;
+  }
+  &.large{
+    width: 2.5em;
+    height: 2.5em;
+  }
+
+  &.reverse{
+    transform: rotate(180deg);
+  }
+
+  &.down{
+    transform: rotate(-90deg);
+  }
+
+  &.main__theme{
+    background-color: #008074;
+  }
+  &.gray__theme{
+    background-color:rgba(0, 0, 0, 0.5);
+  }
+
+  &:hover{
+    cursor:pointer;
+    background-color:  #A90D12;
+  }
+}

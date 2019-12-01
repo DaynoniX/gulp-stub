@@ -1,0 +1,16 @@
+// FONTS MIXIN IMPORT
+
+@import 'fontsMixin';
+
+// FONTS MIXIN GENERATION
+
+@include font-face(ClearSans-Thin, fonts/ClearSans-Thin, null , null , ttf);
+
+
+//FONTS MIXIN VARIABLES
+
+$ClearSans-Thin : 'ClearSans-Thin', sans-serif;
+
+// UI
+
+

@@ -1,0 +1,33 @@
+{
+  "name": "vokrug-project",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/reactive-promotion-group/vokrug-project.git"
+  },
+  "author": "acsima-arge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/reactive-promotion-group/vokrug-project/issues"
+  },
+  "homepage": "https://gitlab.com/reactive-promotion-group/vokrug-project#readme",
+  "dependencies": {
+    "browser-sync": "^2.2.3",
+    "gulp": "3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-cssimport": "^6.0.1",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rigger": "^0.5.8",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-watch": "^5.0.0",
+    "imagemin-pngquant": "^6.0.0",
+    "gulp-sourcemaps": "^1.5.0"
+  }
+}
