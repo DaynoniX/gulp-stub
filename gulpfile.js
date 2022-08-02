@@ -1,14 +1,13 @@
 'use strict';
 
-var gulp = require('gulp'),
-    watch = require('gulp-watch'),
+const gulp = require('gulp'),
+    {watch, series, parallel, src, dest} = require('gulp'),
     prefixer = require('gulp-autoprefixer'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass'),
+    sass = require('gulp-sass')(require('sass')),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
     cssmin = require('gulp-minify-css'),
-    imagemin = require('gulp-imagemin'),
     pngquant = require('imagemin-pngquant'),
     rimraf = require('rimraf'),
     browserSync = require("browser-sync"),
@@ -16,16 +15,16 @@ var gulp = require('gulp'),
 
 
 
-var path = {
+const path = {
     build: {
-        html: 'app/build/',
+        html: './app/build/',
         js: 'app/build/js/',
         css: 'app/build/css/',
         img: 'app/build/assets/',
         fonts: 'app/build/fonts/'
     },
     src: {
-        html: 'app/src/html/*.html',
+        html: './app/src/html/*.html',
         js: 'app/src/js/**/*.js',
         style: 'app/src/styles/*.scss',
         img: 'app/src/assets/**/*.*',
@@ -41,42 +40,44 @@ var path = {
     clean: './app/build'
 };
 
-var config = {
+const config = {
     server: {
         baseDir: "./app/build"
     },
-    tunnel: true,
+    tunnel: false,
     host: 'localhost',
     port: 9000,
-    logPrefix: "acsima_dev"
+    logPrefix: "dev"
 };
 
-gulp.task('webserver', function () {
+function webserver() {
     browserSync(config);
-});
-gulp.task('clean', function (cb) {
+}
+function clean(cb){
     rimraf(path.clean, cb);
-});
-gulp.task('html:build', function () {
-    gulp.src(path.src.html)
+}
+
+function HTMLBuild(){
+    return src(path.src.html)
         .pipe(rigger())
-        .pipe(gulp.dest(path.build.html))
+        .pipe(dest(path.build.html))
         .pipe(reload({stream: true}));
-});
-gulp.task('js:build', function () {
-    gulp.src(path.src.js)
-        .pipe(rigger())
-        .pipe(sourcemaps.init())
-        .pipe(uglify())
-        .pipe(gulp.dest(path.build.js))
-        .pipe(reload({stream: true}));
-});
-gulp.task('fonts:build', function() {
-    gulp.src(path.src.fonts)
-        .pipe(gulp.dest(path.build.fonts))
-});
-gulp.task('style:build', function () {
-    gulp.src(path.src.style)
+}
+
+function JSBuild(){
+    return src(path.src.js)
+    .pipe(rigger())
+    .pipe(sourcemaps.init())
+    .pipe(uglify())
+    .pipe(gulp.dest(path.build.js))
+    .pipe(reload({stream: true}));
+}
+function FontsBuild(){
+    return src(path.src.fonts)
+    .pipe(gulp.dest(path.build.fonts))
+}
+function StyleBuild(){
+    return src(path.src.style)
         .pipe(sourcemaps.init())
         .pipe(sass({
             sourceMap: true,
@@ -86,27 +87,15 @@ gulp.task('style:build', function () {
         .pipe(cssmin())
         .pipe(gulp.dest(path.build.css))
         .pipe(reload({stream: true}));
-});
-gulp.task('build', [
-    'html:build',
-    'js:build',
-    'style:build',
-    'fonts:build'
-]);
-gulp.task('watch', function(){
-    watch([path.watch.html], function(event, cb) {
-        gulp.start('html:build');
-    });
-    watch([path.watch.style], function(event, cb) {
-        gulp.start('style:build');
-    });
-    watch([path.watch.js], function(event, cb) {
-        gulp.start('js:build');
-    });
-    watch([path.watch.fonts], function(event, cb) {
-        gulp.start('fonts:build');
-    });
-});
+}
+const build = parallel([HTMLBuild, JSBuild, FontsBuild, StyleBuild]);
 
 
-gulp.task('default', ['build', 'webserver', 'watch']);
+
+watch([path.watch.html], parallel(HTMLBuild));
+watch([path.watch.style], parallel(StyleBuild));
+watch([path.watch.js], parallel(JSBuild));
+watch([path.watch.fonts], parallel(FontsBuild));
+
+exports.clean = series(clean);
+exports.default = parallel( [build, webserver]);

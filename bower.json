@@ -1,9 +1,9 @@
 {
-  "name": "vokrug-project",
+  "name": "project",
   "description": "",
   "main": "index.js",
   "authors": [
-    "acsima-arge"
+    "daynonix"
   ],
   "license": "ISC",
   "homepage": "",
@@ -16,9 +16,9 @@
     "tests"
   ],
   "dependencies": {
-    "normalize.css": "^8.0.1",
-    "jquery": "^3.4.1",
-    "slick-carousel": "^1.8.1",
-    "bootstrap-grid-only": "^1.0.0"
+    "normalize.css": "latest",
+    "jquery": "latest",
+    "slick-carousel": "latest",
+    "bootstrap-grid-only": "latest"
   }
 }

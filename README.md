@@ -1,2 +1,9 @@
 # gulp-stub
-Подготовленное окружение gulp для создания сайтов с использованием bower компонентов (сетка bootstrap и jQuery)
+Setted up Gulp.js environment to build simple markup projects
+
+Dependencies list:
+
+"gulp" - basic gulp package
+"browser-sync" - 
+
+
