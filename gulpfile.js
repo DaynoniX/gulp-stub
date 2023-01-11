@@ -18,24 +18,24 @@ const gulp = require('gulp'),
 const path = {
     build: {
         html: './app/build/',
-        js: 'app/build/js/',
-        css: 'app/build/css/',
-        img: 'app/build/assets/',
-        fonts: 'app/build/fonts/'
+        js: 'app/build/Scripts/',
+        css: 'app/build/Content/',
+        img: 'app/build/Content/Images',
+        fonts: 'app/build/Content/fonts/'
     },
     src: {
         html: './app/src/html/*.html',
-        js: 'app/src/js/**/*.js',
-        style: 'app/src/styles/*.scss',
-        img: 'app/src/assets/**/*.*',
-        fonts: 'app/src/fonts/**/*.*'
+        js: 'app/src/Scripts/**/*.js',
+        style: 'app/src/Content/*.scss',
+        img: 'app/src/Content/Images/**/*.*',
+        fonts: 'app/src/Content/fonts/**/*.*'
     },
     watch: {
-        html: 'app/src/html/**/*.html',
-        js: 'app/src/js/**/*.js',
+        html: './app/src/html/*.html',
+        js: 'app/src/Scripts/**/*.js',
         style: 'app/src/styles/*.scss',
-        img: 'app/src/assets/**/*.*',
-        fonts: 'app/src/fonts/**/*.*'
+        img: 'app/src/Content/Images/**/*.*',
+        fonts: 'app/src/Content/fonts/**/*.*'
     },
     clean: './app/build'
 };
@@ -63,18 +63,23 @@ function HTMLBuild(){
         .pipe(dest(path.build.html))
         .pipe(reload({stream: true}));
 }
-
+function AssetsBuild(){
+    return src(path.src.img)
+        .pipe(dest(path.build.img))
+        .pipe(reload({stream: true}));
+}
 function JSBuild(){
     return src(path.src.js)
-    .pipe(rigger())
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(gulp.dest(path.build.js))
-    .pipe(reload({stream: true}));
+        .pipe(rigger())
+        .pipe(sourcemaps.init())
+        // .pipe(uglify())
+        .pipe(gulp.dest(path.build.js))
+        .pipe(reload({stream: true}));
 }
 function FontsBuild(){
     return src(path.src.fonts)
-    .pipe(gulp.dest(path.build.fonts))
+        .pipe(gulp.dest(path.build.fonts))
+        .pipe(reload({stream: true}));
 }
 function StyleBuild(){
     return src(path.src.style)
@@ -84,11 +89,11 @@ function StyleBuild(){
             errLogToConsole: true
         }))
         .pipe(prefixer())
-        .pipe(cssmin())
+        // .pipe(cssmin())
         .pipe(gulp.dest(path.build.css))
         .pipe(reload({stream: true}));
 }
-const build = parallel([HTMLBuild, JSBuild, FontsBuild, StyleBuild]);
+const build = parallel([HTMLBuild, AssetsBuild, JSBuild, FontsBuild, StyleBuild]);
 
 
 
@@ -96,6 +101,7 @@ watch([path.watch.html], parallel(HTMLBuild));
 watch([path.watch.style], parallel(StyleBuild));
 watch([path.watch.js], parallel(JSBuild));
 watch([path.watch.fonts], parallel(FontsBuild));
+watch([path.watch.img], parallel(AssetsBuild));
 
 exports.clean = series(clean);
 exports.default = parallel( [build, webserver]);
